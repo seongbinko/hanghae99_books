@@ -32,10 +32,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http.authorizeRequests()
 
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/user/**").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/images/**").permitAll()
+//                .antMatchers("/h2-console/**").permitAll()
+//                .antMatchers("/user/**").permitAll()
+//                .antMatchers("/css/**").permitAll()
+//                .antMatchers("/images/**").permitAll()
+
+                .antMatchers("/**").permitAll()
 
                 // 그 외 모든 요청은 인증과정 필요
                 .anyRequest().authenticated() // 어떤 요청이 오든지 로그인을 하지않앗으면 로그인을 시키겟다
