@@ -6,13 +6,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
 public class SeleniumTest {
 
     public static final String WEB_DRIVER_ID = "webdriver.chrome.driver"; // 드라이버 ID
-    public static final String WEB_DRIVER_PATH = "chromedriver"; // 드라이버 경로
+    public static final String WEB_DRIVER_PATH = "chromedriver.exe"; // 드라이버 경로
 
 
     public static void main(String[] args){
@@ -97,6 +99,15 @@ public class SeleniumTest {
                 // 출판 등록일
                 String bookDate = el1.get(el1.size()-1).getText();
                 System.out.println(bookDate);
+
+                String[] array;
+                array=bookDate.trim().split(" ");
+                if(array[0].contains(".")){
+                    System.out.println(array[0]);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
+                    LocalDate localDate = LocalDate.parse(array[0],formatter);
+                    System.out.println(localDate);
+                }
 
                 driver.navigate().back();
                 i++;
