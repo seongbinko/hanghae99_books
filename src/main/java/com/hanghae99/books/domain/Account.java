@@ -45,4 +45,9 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<BookLike> bookLikes = new HashSet<>();
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
