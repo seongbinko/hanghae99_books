@@ -20,13 +20,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Transactional
 public class SeleniumTest implements ApplicationRunner{
 
     public static final String WEB_DRIVER_ID = "webdriver.chrome.driver"; // 드라이버 ID
-    public static final String WEB_DRIVER_PATH = "chromedriver"; // 드라이버 경로
+    public static final String WEB_DRIVER_PATH = "chromedriver.exe"; // 드라이버 경로
 
 
     private final BookRepository bookRepository;

@@ -8,16 +8,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Bean // 패스워드 인코딩
-//    public BCryptPasswordEncoder encodePassword(){
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean // 패스워드 인코딩
+    public BCryptPasswordEncoder encodePassword(){
+        return new BCryptPasswordEncoder();
+    }
+
+
+
 
     //    @Bean
 //    @Override
@@ -30,8 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().disable();
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()); // cors 다른도메인(리액트)에서 api요청시 에러안나게 해줌
         http.authorizeRequests()
-
 //                .antMatchers("/h2-console/**").permitAll()
 //                .antMatchers("/user/**").permitAll()
 //                .antMatchers("/css/**").permitAll()
