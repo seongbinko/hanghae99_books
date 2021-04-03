@@ -12,7 +12,7 @@ import java.util.List;
 public class SeleniumTest {
 
     public static final String WEB_DRIVER_ID = "webdriver.chrome.driver"; // 드라이버 ID
-    public static final String WEB_DRIVER_PATH = "chromedriver.exe"; // 드라이버 경로
+    public static final String WEB_DRIVER_PATH = "chromedriver"; // 드라이버 경로
 
 
     public static void main(String[] args){
@@ -33,78 +33,91 @@ public class SeleniumTest {
         //위에서 설정한 옵션들 담은 드라이버 객체 생성
         //옵션을 설정하지 않았을 때에는 생략 가능하다.
         //WebDriver 객체가 곧 하나의 브라우저 창이라 생각한다.
-        WebDriver driver = new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver();
 
-        //이동을 원하는 url
-        String url = "https://select.ridibooks.com/categories/100";
+        for(int page = 1; page < 21; page++) {
+            //이동을 원하는 url
 
-        //webDriver를 해당 url로 이동한다.
-        driver.get(url);
+            String url = "https://select.ridibooks.com/categories/100?sort=popular&page=" + page;
 
-        //브라우저 이동시 생기는 로드시간을 기다린다.
-        //HTTP 응답속도보다 자바의 컴파일 속도가 더 빠르기 때문에 임의적으로 1초를 대기한다.
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e){
+            //webDriver를 해당 url로 이동한다.
+            driver.get(url);
 
-        }
+            //브라우저 이동시 생기는 로드시간을 기다린다.
+            //HTTP 응답속도보다 자바의 컴파일 속도가 더 빠르기 때문에 임의적으로 1초를 대기한다.
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
 //        class = "nav"인 모든 태그를 가진 WebElement리스트를 받아온다.
 //        WebElement는 html의 태그를 가지는 클래스이다.
-        List<WebElement> el1 = driver.findElements(By.className("GridBookList_ItemLink")); // 살짝 이상한 위치 크롤링 되는것같다.
-        System.out.println(el1);
 
+            int i = 0;
+            while (i < 24) {
+                List<WebElement> elList = driver.findElements(By.className("GridBookList_ItemLink"));
+                elList.get(i).click();
+                // 1초대기
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+                // 책썸네일
+                String imgUrl = driver.findElement(By.tagName("img")).getAttribute("src");
+                System.out.println(imgUrl);
+                // 책제목
+                String title = driver.findElement(By.className("PageBookDetail_BookTitle")).getText();
+                System.out.println(title);
+                // 책 저자,번역,출판사
+                String bookElements = driver.findElement(By.className("PageBookDetail_BookElements")).getText();
+                System.out.println(bookElements);
+                // 별점
+                //String ratingSummaryAverage = driver.findElement(By.className("PageBookDetail_RatingSummaryAverage")).getText();
+                //System.out.println(ratingSummaryAverage);
+                // 별점누른 사람수
+                //String ratingSummaryCount = driver.findElement(By.className("PageBookDetail_RatingSummaryCount")).getText();
+                //System.out.println(ratingSummaryCount);
 
-        for (int i=0; i<el1.size(); i++){
-            System.out.println(el1.get(i).getText());
+                // 책소개랑 출판등록일 class가 같아서 List로 받아옴
+                List<WebElement> el1 = driver.findElements(By.className("PageBookDetail_PanelContent"));
+                // 책 소개
+                if(el1.get(0).getText().equals("")){
+                    String bookDescription = el1.get(1).getText();
+                    System.out.println(bookDescription);
+                }else{
+                    String bookDescription = el1.get(0).getText();
+                    System.out.println(bookDescription);
+                }
 
-            if(el1.get(i).getText().equals("인간 실격")){
-                el1.get(i).click(); // 클릭이 안됨 스트링이랑 a태그랑 따로 있어서 그런듯
-                WebElement el2 = driver.findElement(By.className("PageBookDetail_BookTitle"));
-                System.out.println(el2.getText());
+                String bookDescription = el1.get(0).getText();
+                System.out.println(bookDescription);
+                // 출판 등록일
+                String bookDate = el1.get(el1.size()-1).getText();
+                System.out.println(bookDate);
+
                 driver.navigate().back();
+                i++;
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
-
-        // 1초대기
-        try{
-            Thread.sleep(1000);
-        } catch (InterruptedException e){
-
-        }
-
-        // 버튼을 클릭했기 때문에 브라우저는 엄마라는 제목을 가진 곳으로 이동돼있다.
-        // 이동한 창의 제목을 가져온다.
-
-
-
-
-
-
-        //div속에서 strong태그를 가진 모든 element를 받아온다.
-//        List<WebElement> el3 = el2.findElements(By.className("css-orilj0-BookDetail-MetaContents--CategoryLink e1b1enb40"));
-//
-//        int count = 0;
-//        for(int i=0; i<el3.size(); i++){
-//            // 뉴스의 제목을 모두 출력한다.
-//            System.out.println(++count + "번 뉴스" + el3.get(i).getText());
-//        }
-
-
-        try{
+        try {
             //드라이버가 null이 아니라면
-            if(driver != null){
+            if (driver != null) {
                 // 드라이버 연결 종료
                 driver.close(); // 드라이버 연결해제
                 // 프로세스 종료
                 driver.quit();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
-
-
 }
