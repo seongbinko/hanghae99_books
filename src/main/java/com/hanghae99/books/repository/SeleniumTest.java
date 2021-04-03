@@ -55,7 +55,7 @@ public class SeleniumTest implements ApplicationRunner{
         //WebDriver 객체가 곧 하나의 브라우저 창이라 생각한다.
         WebDriver driver = new ChromeDriver();
 
-        for(int page = 1; page < 2; page++) {
+        for(int page = 11; page < 12; page++) {
             //이동을 원하는 url
 
             String url = "https://select.ridibooks.com/categories/100?sort=popular&page=" + page;
