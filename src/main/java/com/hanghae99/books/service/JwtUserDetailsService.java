@@ -1,5 +1,10 @@
 package com.hanghae99.books.service;
 
+import com.hanghae99.books.domain.Account;
+import com.hanghae99.books.domain.JwtRequest;
+import com.hanghae99.books.repository.AccountRepository;
+import com.hanghae99.books.security.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,17 +12,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
+    @Autowired
+    AccountRepository accountRepository;
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if ("user_id".equals(username)) {
-            return new User("user_id", "$2a$10$m/enYHaLsCwH2dKMUAtQp.ksGOA6lq7Fd2pnMb4L.yT4GyeAPRPyS",
-                    new ArrayList<>());
-        } else {
+        Account user = accountRepository.findByUsername(username);
+        if(user == null){
             throw new UsernameNotFoundException("User not found with username: " + username);
+        }else{
+            return new UserDetailsImpl(user);
         }
     }
 }

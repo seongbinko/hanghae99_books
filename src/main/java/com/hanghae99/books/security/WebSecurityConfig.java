@@ -80,20 +80,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .exceptionHandling();
 ////                .accessDeniedPage("/user/forbidden"); // 인가가 되지 않았을 경우 forbidden 페이지로 이동
 
-                http.authorizeRequests().antMatchers("/authenticate").permitAll().
-                        antMatchers("/user/**").permitAll().
-                // all other requests need to be authenticated
+                http.authorizeRequests().antMatchers("/user/**").permitAll().
                         anyRequest().authenticated().and().
-                        formLogin().
-                        loginProcessingUrl("/user/login").
-                        defaultSuccessUrl("/authenticate").and().
-                        
+                // all other requests need to be authenticated
+
 
          exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 시큐리티 기본이 세션을 활용하는데 세션을 사용하지 않겠다는 뜻임
 
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        //UsernamePasswordAuthenticationFilter 이거 전에 jwtRequestFilter를 먼저 건다는 의미
     }
 
 

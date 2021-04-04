@@ -24,8 +24,8 @@ public class AccountService {
     public Account registerAccount(AccountRequestDto requestDto){
         String username = requestDto.getUsername();
 
-        Optional<Account> found = accountRepository.findByUsername(username);
-        if(found.isPresent()){
+        Account found = accountRepository.findByUsername(username);
+        if(found != null){
             throw new IllegalArgumentException("중복된 사용자 ID가 존재합니다.");
         }
 
