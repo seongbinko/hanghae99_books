@@ -1,6 +1,7 @@
 package com.hanghae99.books.controller;
 
 
+import com.google.gson.JsonObject;
 import com.hanghae99.books.config.JwtTokenProvider;
 import com.hanghae99.books.domain.Account;
 import com.hanghae99.books.dto.AccountRequestDto;
@@ -51,6 +52,9 @@ public class AccountController {
         if (!passwordEncoder.matches(account.get("password"), acc.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-        return jwtTokenProvider.createToken(acc.getUsername(), acc.getRoles());
+
+        JsonObject obj = new JsonObject();
+        obj.addProperty("token", jwtTokenProvider.createToken(acc.getUsername(), acc.getRoles()));
+        return obj.toString();
     }
 }
