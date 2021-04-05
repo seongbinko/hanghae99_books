@@ -34,11 +34,17 @@ public class CommentService {
         Account account = accountRepository.findById(account_id).orElseThrow(
                 () -> new IllegalArgumentException("계정이 존재하지 않습니다.")
         );
-        Comment comment = new Comment(requestDto);
-        book.addComment(comment);
-        account.addComment(comment);
-        commentRepository.save(comment);
-        return comment;
+        Comment checkcomment = commentRepository.findByAccountIdAndBookId(account_id, books_id);
+        if (checkcomment == null){
+            Comment comment = new Comment(requestDto);
+            book.addComment(comment);
+            account.addComment(comment);
+            commentRepository.save(comment);
+            return comment;
+        }else{
+            return null;
+        }
+
     }
 
     @Transactional

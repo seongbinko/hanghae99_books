@@ -18,40 +18,38 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 
-    private final CommentRepository commentRepository;
-    private final BookRepository bookRepository;
     private final CommentService commentService;
 
-    @GetMapping("/api/books/{books_id}/comments")
-    public List<Comment> ReadComment(@PathVariable Long books_id){
-        return commentService.ReadComment(books_id);
+    @GetMapping("/api/books/{book_id}/comments")
+    public List<Comment> ReadComment(@PathVariable Long book_id){
+        return commentService.ReadComment(book_id);
     }
 
-    @PostMapping("/api/books/{books_id}/comments")
-    public ResponseEntity CreateComment(@RequestBody CommentRequestDto requestDto, @PathVariable Long books_id, @AuthenticationPrincipal Account userDetails){
-        Comment comment = commentService.CreateComment(requestDto, books_id, userDetails.getId());
+    @PostMapping("/api/books/{book_id}/comments")
+    public ResponseEntity CreateComment(@RequestBody CommentRequestDto requestDto, @PathVariable Long book_id, @AuthenticationPrincipal Account userDetails){
+        Comment comment = commentService.CreateComment(requestDto, book_id, userDetails.getId());
         if (comment == null){
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/api/books/{books_id}/comments/{comments_id}")
-    public ResponseEntity UpdateComment(@RequestBody CommentRequestDto requestDto, @PathVariable Long books_id, @PathVariable Long comments_id, @AuthenticationPrincipal Account userDetails){
-        Comment comment = commentService.UpdateComment(requestDto, comments_id, userDetails.getId());
+    @PutMapping("/api/books/{book_id}/comments/{comment_id}")
+    public ResponseEntity UpdateComment(@RequestBody CommentRequestDto requestDto, @PathVariable Long book_id, @PathVariable Long comment_id, @AuthenticationPrincipal Account userDetails){
+        Comment comment = commentService.UpdateComment(requestDto, comment_id, userDetails.getId());
         if (comment == null){
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/api/books/{books_id}/comments/{comments_id}")
-    public ResponseEntity DeleteComment(@PathVariable Long books_id, @PathVariable Long comments_id, @AuthenticationPrincipal Account userDetails){
-        Comment comment = commentService.DeleteComment(books_id, comments_id, userDetails.getId());
+    @DeleteMapping("/api/books/{book_id}/comments/{comment_id}")
+    public ResponseEntity DeleteComment(@PathVariable Long book_id, @PathVariable Long comment_id, @AuthenticationPrincipal Account userDetails){
+        Comment comment = commentService.DeleteComment(book_id, comment_id, userDetails.getId());
         if (comment == null){
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
-        //ResponseEntity.badRequest().build();
+
     }
 }
