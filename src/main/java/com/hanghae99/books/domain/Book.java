@@ -49,9 +49,19 @@ public class Book {
         comment.setBook(this);
     }
 
-    public void deleteComment(Comment deleteComment){
-        this.comments.remove(deleteComment);
-        deleteComment.setBook(null);
+    public void deleteComment(Comment comment){
+        this.comments.remove(comment);
+        comment.setBook(null);
+    }
+
+    public void addHeart(Heart heart){
+        this.hearts.add(heart);
+        heart.setBook(this);
+    }
+
+    public void deleteHeart(Heart heart){
+        this.hearts.remove(heart);
+        heart.setBook(null);
     }
 
 }

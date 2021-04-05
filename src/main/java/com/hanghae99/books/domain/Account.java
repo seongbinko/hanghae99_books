@@ -102,4 +102,14 @@ public class Account implements UserDetails {
         comment.setAccount(null);
     }
 
+    public void addHeart(Heart heart){
+        this.hearts.add(heart);
+        heart.setAccount(this);
+    }
+
+    public void deleteHeart(Heart heart){
+        this.hearts.remove(heart);
+        heart.setAccount(null);
+    }
+
 }
