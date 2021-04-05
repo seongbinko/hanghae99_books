@@ -9,8 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,4 +32,11 @@ public class BookController {
 
         return bookRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
+
+    @GetMapping("/api/books/{book_id}")
+    public Book getBookById(@PathVariable Long book_id) {
+        Book book = bookRepository.findById(book_id).orElse(null);
+        return book;
+    }
+
 }
