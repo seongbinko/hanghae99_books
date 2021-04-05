@@ -27,7 +27,7 @@ public class CommentService {
         return comments;
     }
 
-    public void CreateComment(CommentRequestDto requestDto, Long books_id, Long account_id){
+    public Comment CreateComment(CommentRequestDto requestDto, Long books_id, Long account_id){
         Book book = bookRepository.findById(books_id).orElseThrow(
                 () -> new IllegalArgumentException("책이 존재하지 않습니다.")
         );
@@ -35,35 +35,40 @@ public class CommentService {
                 () -> new IllegalArgumentException("계정이 존재하지 않습니다.")
         );
         Comment comment = new Comment(requestDto);
-        comment.setBook(book);
-        comment.setAccount(account);
+        book.addComment(comment);
+        account.addComment(comment);
         commentRepository.save(comment);
+        return comment;
     }
 
     @Transactional
-    public void UpdateComment(CommentRequestDto requestDto, Long comments_id, Long account_id) {
+    public Comment UpdateComment(CommentRequestDto requestDto, Long comments_id, Long account_id) {
         Comment comment = commentRepository.findById(comments_id).orElseThrow(
                 () -> new IllegalArgumentException("댓글이 존재하지 않습니다.")
         );
         if (!comment.getAccount().getId().equals(account_id)){
-            System.out.println("게시글을 수정할 수 없습니다.");
+            return null;
         }else{
             comment.updateComment(requestDto);
         }
-
-
+        return comment;
     }
 
-
-    public void DeleteComment(Long comments_id, Long account_id){
+    public void DeleteComment(Long books_id, Long comments_id, Long account_id){
+        Book book = bookRepository.findById(books_id).orElseThrow(
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
+        );
         Comment comment = commentRepository.findById(comments_id).orElseThrow(
                 () -> new IllegalArgumentException("댓글이 존재하지 않습니다.")
         );
+        Account account = accountRepository.findById(account_id).orElseThrow(
+                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+        );
         if (!comment.getAccount().getId().equals(account_id)){
-            System.out.println("게시글을 수정할 수 없습니다.");
+            System.out.println("게시글을 삭제할 수 없습니다.");
         }else{
-            comment.setBook(null);
-            comment.setAccount(null);
+            book.deleteComment(comment);
+            account.deleteComment(comment);
             commentRepository.deleteById(comments_id);
         }
 

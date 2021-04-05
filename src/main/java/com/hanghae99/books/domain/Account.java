@@ -92,4 +92,14 @@ public class Account implements UserDetails {
         return false;
     }
 
+    public void addComment(Comment comment){
+        this.comments.add(comment);
+        comment.setAccount(this);
+    }
+
+    public void deleteComment(Comment comment){
+        this.comments.remove(comment);
+        comment.setAccount(null);
+    }
+
 }
