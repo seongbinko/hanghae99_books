@@ -13,13 +13,13 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookLike {
+public class Heart {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private int likeCount;
+    private boolean isHeart;
 
     @ManyToOne
     private Book book;
