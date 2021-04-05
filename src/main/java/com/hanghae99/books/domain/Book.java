@@ -2,9 +2,6 @@ package com.hanghae99.books.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -45,6 +42,6 @@ public class Book {
     @JsonIgnore
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
-    private Set<BookLike> bookLikes = new HashSet<>();
+    private Set<Heart> hearts = new HashSet<>();
 
 }
