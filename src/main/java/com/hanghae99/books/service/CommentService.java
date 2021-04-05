@@ -54,7 +54,7 @@ public class CommentService {
         return comment;
     }
 
-    public void DeleteComment(Long books_id, Long comments_id, Long account_id){
+    public Comment DeleteComment(Long books_id, Long comments_id, Long account_id){
         Book book = bookRepository.findById(books_id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
@@ -65,11 +65,12 @@ public class CommentService {
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
         if (!comment.getAccount().getId().equals(account_id)){
-            System.out.println("게시글을 삭제할 수 없습니다.");
+            return null;
         }else{
             book.deleteComment(comment);
             account.deleteComment(comment);
             commentRepository.deleteById(comments_id);
+            return comment;
         }
 
     }

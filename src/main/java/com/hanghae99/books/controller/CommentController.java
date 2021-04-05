@@ -47,7 +47,10 @@ public class CommentController {
 
     @DeleteMapping("/api/books/{books_id}/comments/{comments_id}")
     public ResponseEntity DeleteComment(@PathVariable Long books_id, @PathVariable Long comments_id, @AuthenticationPrincipal Account userDetails){
-        commentService.DeleteComment(books_id, comments_id, userDetails.getId());
+        Comment comment = commentService.DeleteComment(books_id, comments_id, userDetails.getId());
+        if (comment == null){
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok().build();
         //ResponseEntity.badRequest().build();
     }
