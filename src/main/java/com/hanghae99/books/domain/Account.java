@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Account implements UserDetails {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -65,6 +66,7 @@ public class Account implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public String getUsername() {
         return username;
@@ -89,4 +91,5 @@ public class Account implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
 }
