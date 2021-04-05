@@ -1,5 +1,6 @@
 package com.hanghae99.books.domain;
 
+import com.hanghae99.books.dto.CommentRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -37,4 +38,14 @@ public class Comment {
 
     @ManyToOne
     private Account account;
+
+    public Comment(CommentRequestDto requestDto){
+        this.comment = requestDto.getComment();
+        this.starRate = requestDto.getStarRate();
+    }
+
+    public void updateComment(CommentRequestDto requestDto){
+        this.comment = requestDto.getComment();
+        this.starRate = requestDto.getStarRate();
+    }
 }

@@ -44,4 +44,14 @@ public class Book {
     @Builder.Default
     private Set<Heart> hearts = new HashSet<>();
 
+    public void addComment(Comment comment){
+        this.comments.add(comment);
+        comment.setBook(this);
+    }
+
+    public void deleteComment(Comment deleteComment){
+        this.comments.remove(deleteComment);
+        deleteComment.setBook(null);
+    }
+
 }

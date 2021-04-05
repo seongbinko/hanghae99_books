@@ -75,7 +75,7 @@ public class SeleniumTest implements ApplicationRunner{
 //        WebElement는 html의 태그를 가지는 클래스이다.
 
             int i = 0;
-            while (i < 24) {
+            while (i < 3) {
                 List<WebElement> elList = driver.findElements(By.className("GridBookList_ItemLink"));
                 elList.get(i).click();
                 // 1초대기
