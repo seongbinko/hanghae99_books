@@ -22,10 +22,12 @@ public class CommentService {
     private final AccountRepository accountRepository;
     private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
-    float totalStarRate = 0;
-    float starRate;
+
 
     public HashMap<String, Object> ReadComment(Long book_id){
+        float totalStarRate = 0;
+        float starRate;
+        float avgStarRate;
         List<Comment> comments = commentRepository.findByBookIdOrderByCreatedAtDesc(book_id);
         List<Comment> starRateCountList = commentRepository.findByBookId(book_id);
 
@@ -33,9 +35,11 @@ public class CommentService {
         Integer starRateCount = starRateCountList.size();
         for(int i=0; i<starRateCountList.size(); i++){
             totalStarRate += starRateCountList.get(i).getStarRate();
+            System.out.println(totalStarRate);
         }
         starRate = totalStarRate / starRateCount;
-        Float avgStarRate=Float.valueOf(String.format("%.1f",starRate));
+        System.out.println(starRate);
+        avgStarRate= Float.parseFloat(String.format("%.1f", starRate));
         map.put("comment", comments);
         map.put("avgStarRate", avgStarRate);
         map.put("starRateCount", starRateCount);
