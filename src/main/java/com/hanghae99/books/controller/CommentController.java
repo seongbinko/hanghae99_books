@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/api/books/{book_id}/comments")
-    public List<Comment> ReadComment(@PathVariable Long book_id){
+    public HashMap<String, Object> ReadComment(@PathVariable Long book_id){
         return commentService.ReadComment(book_id);
     }
 

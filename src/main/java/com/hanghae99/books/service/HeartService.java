@@ -21,16 +21,18 @@ public class HeartService {
     private final BookRepository bookRepository;
     private final AccountRepository accountRepository;
 
-    public HashMap<Boolean,Integer> ReadHeart(Long book_id, Long account_id) {
+    public HashMap<String, Object> ReadHeart(Long book_id, Long account_id) {
         Heart heart = heartRepository.findByBookIdAndAccountId(book_id, account_id);
         List<Heart> heartCount = heartRepository.findByBookId(book_id);
-        HashMap<Boolean, Integer> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         Integer Count = heartCount.size();
         if (heart == null){
-            map.put(false, Count);
+            map.put("check", false);
+            map.put("heartCount", Count);
             return map;
         }
-        map.put(true, Count);
+        map.put("check", true);
+        map.put("heartCount", Count);
         return map;
     }
 
@@ -44,12 +46,12 @@ public class HeartService {
         );
         Heart heart = heartRepository.findByBookIdAndAccountId(book_id, account_id);
         if (heart == null) {
-            Heart newheart = new Heart();
-            newheart.setHeart(true);
-            book.addHeart(newheart);
-            account.addHeart(newheart);
-            heartRepository.save(newheart);
-            return newheart;
+            Heart newHeart = new Heart();
+            newHeart.setHeart(true);
+            book.addHeart(newHeart);
+            account.addHeart(newHeart);
+            heartRepository.save(newHeart);
+            return newHeart;
         }
         return null;
     }

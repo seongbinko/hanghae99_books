@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,25 +23,42 @@ public class CommentService {
     private final AccountRepository accountRepository;
     private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
+    float totalStarRate = 0;
+    float starRate;
 
-    public List<Comment> ReadComment(Long books_id){
-        List<Comment> comments = commentRepository.findByBookIdOrderByCreatedAtDesc(books_id);
-        return comments;
+    public HashMap<String, Object> ReadComment(Long book_id){
+        List<Comment> comments = commentRepository.findByBookIdOrderByCreatedAtDesc(book_id);
+        List<Comment> starRateCountList = commentRepository.findByBookId(book_id);
+
+        HashMap<String, Object> map = new HashMap<>();
+        Integer starRateCount = starRateCountList.size();
+        for(int i=0; i<starRateCountList.size(); i++){
+            totalStarRate += starRateCountList.get(i).getStarRate();
+        }
+        starRate = totalStarRate / starRateCount;
+        Float avgStarRate=Float.valueOf(String.format("%.1f",starRate));
+        map.put("comment", comments);
+        map.put("avgStarRate", avgStarRate);
+        map.put("starRateCount", starRateCount);
+
+        return map;
     }
 
-    public Comment CreateComment(CommentRequestDto requestDto, Long books_id, Long account_id){
-        Book book = bookRepository.findById(books_id).orElseThrow(
+    public Comment CreateComment(CommentRequestDto requestDto, Long book_id, Long account_id){
+        Book book = bookRepository.findById(book_id).orElseThrow(
                 () -> new IllegalArgumentException("책이 존재하지 않습니다.")
         );
         Account account = accountRepository.findById(account_id).orElseThrow(
                 () -> new IllegalArgumentException("계정이 존재하지 않습니다.")
         );
-        Comment checkcomment = commentRepository.findByAccountIdAndBookId(account_id, books_id);
-        if (checkcomment == null){
+        Comment checkComment = commentRepository.findByAccountIdAndBookId(account_id, book_id);
+
+        if (checkComment == null){
             Comment comment = new Comment(requestDto);
             book.addComment(comment);
             account.addComment(comment);
             commentRepository.save(comment);
+
             return comment;
         }else{
             return null;
@@ -49,8 +67,8 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment UpdateComment(CommentRequestDto requestDto, Long comments_id, Long account_id) {
-        Comment comment = commentRepository.findById(comments_id).orElseThrow(
+    public Comment UpdateComment(CommentRequestDto requestDto, Long comment_id, Long account_id) {
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(
                 () -> new IllegalArgumentException("댓글이 존재하지 않습니다.")
         );
         if (!comment.getAccount().getId().equals(account_id)){
@@ -61,11 +79,11 @@ public class CommentService {
         return comment;
     }
 
-    public Comment DeleteComment(Long books_id, Long comments_id, Long account_id){
-        Book book = bookRepository.findById(books_id).orElseThrow(
+    public Comment DeleteComment(Long book_id, Long comment_id, Long account_id){
+        Book book = bookRepository.findById(book_id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        Comment comment = commentRepository.findById(comments_id).orElseThrow(
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(
                 () -> new IllegalArgumentException("댓글이 존재하지 않습니다.")
         );
         Account account = accountRepository.findById(account_id).orElseThrow(
@@ -76,7 +94,7 @@ public class CommentService {
         }else{
             book.deleteComment(comment);
             account.deleteComment(comment);
-            commentRepository.deleteById(comments_id);
+            commentRepository.deleteById(comment_id);
             return comment;
         }
 

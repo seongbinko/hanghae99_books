@@ -25,7 +25,7 @@ public class Comment {
 
     private String comment;
 
-    private Integer starRate;
+    private float starRate;
 
     @CreatedDate
     private LocalDateTime createdAt;
