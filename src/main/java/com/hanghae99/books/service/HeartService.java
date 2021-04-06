@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,12 +21,17 @@ public class HeartService {
     private final BookRepository bookRepository;
     private final AccountRepository accountRepository;
 
-    public boolean ReadHeart(Long book_id, Long account_id) {
+    public HashMap<Boolean,Integer> ReadHeart(Long book_id, Long account_id) {
         Heart heart = heartRepository.findByBookIdAndAccountId(book_id, account_id);
+        List<Heart> heartCount = heartRepository.findByBookId(book_id);
+        HashMap<Boolean, Integer> map = new HashMap<>();
+        Integer Count = heartCount.size();
         if (heart == null){
-            return false;
+            map.put(false, Count);
+            return map;
         }
-        return heart.isHeart();
+        map.put(true, Count);
+        return map;
     }
 
     @Transactional
@@ -44,14 +51,6 @@ public class HeartService {
             heartRepository.save(newheart);
             return newheart;
         }
-//        }else if (!heart.isHeart()){
-//            heart.setHeart(true);
-//            return heart.isHeart();
-//
-//        }else{
-//            heart.setHeart(false);
-//            return heart.isHeart();
-//        }
         return null;
     }
 
