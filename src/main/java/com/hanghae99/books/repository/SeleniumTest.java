@@ -20,13 +20,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-//@Component
+@Component
 @RequiredArgsConstructor
 @Transactional
 public class SeleniumTest implements ApplicationRunner{
 
     public static final String WEB_DRIVER_ID = "webdriver.chrome.driver"; // 드라이버 ID
-    public static final String WEB_DRIVER_PATH = "chromedriver.exe"; // 드라이버 경로
+    public static final String WEB_DRIVER_PATH = "chromedriver"; // 드라이버 경로
 
 
     private final BookRepository bookRepository;
@@ -55,7 +55,7 @@ public class SeleniumTest implements ApplicationRunner{
         //WebDriver 객체가 곧 하나의 브라우저 창이라 생각한다.
         WebDriver driver = new ChromeDriver();
 
-        for(int page = 11; page < 12; page++) {
+        for(int page = 15; page < 17; page++) {
             //이동을 원하는 url
 
             String url = "https://select.ridibooks.com/categories/100?sort=popular&page=" + page;
@@ -75,7 +75,7 @@ public class SeleniumTest implements ApplicationRunner{
 //        WebElement는 html의 태그를 가지는 클래스이다.
 
             int i = 0;
-            while (i < 3) {
+            while (i < 24) {
                 List<WebElement> elList = driver.findElements(By.className("GridBookList_ItemLink"));
                 elList.get(i).click();
                 // 1초대기
