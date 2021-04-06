@@ -22,7 +22,6 @@ public class AccountController {
 
 
     private final AccountService accountService;
-
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountRepository accountRepository;

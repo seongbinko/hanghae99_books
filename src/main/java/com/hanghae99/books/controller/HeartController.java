@@ -19,7 +19,7 @@ public class HeartController {
     private final HeartService heartService;
 
     @GetMapping("/api/books/{book_id}/heart")
-    public HashMap<Boolean, Integer> ReadHeart(@PathVariable Long book_id, @AuthenticationPrincipal Account userDetails){
+    public HashMap<String, Object> ReadHeart(@PathVariable Long book_id, @AuthenticationPrincipal Account userDetails){
         return heartService.ReadHeart(book_id, userDetails.getId());
     }
 
