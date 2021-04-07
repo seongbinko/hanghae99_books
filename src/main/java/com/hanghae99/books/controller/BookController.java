@@ -33,19 +33,21 @@ public class BookController {
         if(sort.equals("starRate")) {
             int start = (page-1) * size;
             List<Book> bookList  = bookRepository.findAllByOrderByStarRate(start, size);
-
-            //return new PageImpl<>(bookList, pageable, bookList.size());
+            for (Book book : bookList) {
+                BookRequestDto requestDto = new BookRequestDto(book);
+                bookListDto.add(requestDto);
+            }
+            return new PageImpl<>(bookListDto, pageable, bookListDto.size());
         }
 
         else if(sort.equals("heart")) {
             int start = (page-1) * size;
             List<Book> bookList  = bookRepository.findAllByOrderByHeart(start, size);
-            for(int i=0; i<bookList.size(); i++){
-                Book book = bookList.get(i);
+            for (Book book : bookList) {
                 BookRequestDto requestDto = new BookRequestDto(book);
                 bookListDto.add(requestDto);
             }
-            return new PageImpl<>(bookList, pageable, bookList.size());
+            return new PageImpl<>(bookListDto, pageable, bookListDto.size());
         }
         else{
             Page<Book> books = bookRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -54,10 +56,9 @@ public class BookController {
                 BookRequestDto requestDto = new BookRequestDto(book);
                 bookListDto.add(requestDto);
             }
-            return new PageImpl<>(bookList, pageable, bookList.size());
+            return new PageImpl<>(bookListDto, pageable, bookListDto.size());
         }
 
-        return null;
     }
 
     @GetMapping("/api/books/{book_id}")
