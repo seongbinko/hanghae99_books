@@ -12,6 +12,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ *  Jwt가 유효한 토큰인지 인증하기 위한 Filter이다.
+ */
 @RequiredArgsConstructor
 public class JwtAutenticationFilter extends GenericFilterBean {
 

@@ -1,5 +1,6 @@
 package com.hanghae99.books.controller;
 
+import com.hanghae99.books.config.UserDetailsImpl;
 import com.hanghae99.books.domain.Account;
 import com.hanghae99.books.domain.Heart;
 import com.hanghae99.books.domain.Message;
@@ -19,13 +20,13 @@ public class HeartController {
     private final HeartService heartService;
 
     @GetMapping("/api/books/{book_id}/heart")
-    public HashMap<String, Object> ReadHeart(@PathVariable Long book_id, @AuthenticationPrincipal Account userDetails){
-        return heartService.ReadHeart(book_id, userDetails.getId());
+    public HashMap<String, Object> ReadHeart(@PathVariable Long book_id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return heartService.ReadHeart(book_id, userDetails.getAccount().getId());
     }
 
     @PostMapping("/api/books/{book_id}/heart")
-    public ResponseEntity CreateHeart(@PathVariable Long book_id, @AuthenticationPrincipal Account userDetails){
-        Heart heart = heartService.CreateHeart(book_id, userDetails.getId());
+    public ResponseEntity CreateHeart(@PathVariable Long book_id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        Heart heart = heartService.CreateHeart(book_id, userDetails.getAccount().getId());
         if (heart == null){
             Message message = Message.builder()
                     .message1("이미 좋아요 상태입니다.")
@@ -36,8 +37,8 @@ public class HeartController {
     }
 
     @DeleteMapping("/api/books/{book_id}/heart")
-    public ResponseEntity DeleteHeart(@PathVariable Long book_id, @AuthenticationPrincipal Account userDetails){
-        Heart heart = heartService.DeleteHeart(book_id, userDetails.getId());
+    public ResponseEntity DeleteHeart(@PathVariable Long book_id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        Heart heart = heartService.DeleteHeart(book_id, userDetails.getAccount().getId());
         if (heart == null){
             Message message = Message.builder()
                     .message1("취소할 좋아요가 없습니다.")

@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * JWT를 생성하고 검증하는 컴포넌트
+ * Jwt Token을 생성, 인증, 권한 부여, 유효성 검사, PK 추출 등의 다양한 기능을 제공하는 클래스
  */
 @RequiredArgsConstructor
 @Component
